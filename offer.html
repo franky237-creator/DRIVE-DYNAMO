@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Explore Offerings - DriveDynamo</title>
+<link rel="stylesheet" href="general.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+    /* Additional styles for offerings page */
+    .offerings-filter {
+        padding: 2rem 0;
+        background-color: var(--light-bg-color);
+    }
+    
+    .filter-container {
+        background-color: var(--white-color);
+        border-radius: 10px;
+        padding: 1.5rem;
+        box-shadow: var(--box-shadow);
+    }
+    
+    .transaction-type-tabs {
+        display: flex;
+        margin-bottom: 1.5rem;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 1rem;
+    }
+    
+    .tab-btn {
+        background: none;
+        border: none;
+        padding: 0.5rem 1.5rem;
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-color);
+        cursor: pointer;
+        border-radius: 5px;
+        transition: var(--transition);
+    }
+    
+    .tab-btn.active {
+        background-color: var(--primary-color);
+        color: var(--white-color);
+    }
+    
+    .filter-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .filter-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        align-items: flex-end;
+    }
+    
+    .filter-group {
+        flex: 1;
+        min-width: 200px;
+    }
+    
+    .filter-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: var(--secondary-color);
+    }
+    
+    .filter-group select,
+    .filter-group input[type="text"] {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        border: 1px solid var(--border-color);
+        border-radius: 5px;
+        font-size: 0.9rem;
+        color: var(--text-color);
+        background-color: var(--white-color);
+        transition: var(--transition);
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 1rem center;
+        background-size: 1rem;
+    }
+    
+    .filter-group input[type="text"] {
+        background-image: none;
+    }
+    
+    .filter-group select:focus,
+    .filter-group input[type="text"]:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 2px rgba(230, 57, 70, 0.2);
+    }
+    
+    .search-group {
+        flex: 2;
+        position: relative;
+    }
+    
+    .search-group input[type="text"] {
+        padding-left: 2.5rem;
+    }
+    
+    .search-group::before {
+        content: "\f002";
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-color);
+        opacity: 0.5;
+    }
+    
+    .filter-buttons {
+        display: flex;
+        gap: 1rem;
+        margin-left: auto;
+    }
+    
+    .btn-primary,
+    .btn-secondary {
+        padding: 0.8rem 1.5rem;
+        border: none;
+        border-radius: 5px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+    
+    .btn-primary {
+        background-color: var(--primary-color);
+        color: var(--white-color);
+    }
+    
+    .btn-secondary {
+        background-color: var(--light-bg-color);
+        color: var(--secondary-color);
+        border: 1px solid var(--border-color);
+    }
+    
+    .btn-primary:hover {
+        background-color: var(--primary-dark-color);
+    }
+    
+    .btn-secondary:hover {
+        background-color: var(--border-color);
+    }
+    
+    .results-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    
+    .results-title {
+        font-size: 1.5rem;
+        color: var(--secondary-color);
+        margin: 0;
+    }
+    
+    .results-count {
+        color: var(--text-color);
+        font-size: 0.9rem;
+    }
+    
+    .sort-options {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .sort-options label {
+        color: var(--text-color);
+        font-size: 0.9rem;
+    }
+    
+    .sort-options select {
+        padding: 0.5rem 2rem 0.5rem 0.8rem;
+        border: 1px solid var(--border-color);
+        border-radius: 5px;
+        font-size: 0.9rem;
+        color: var(--text-color);
+        background-color: var(--white-color);
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 0.5rem center;
+        background-size: 0.8rem;
+    }
+    
+    .vehicles-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-bottom: 3rem;
+    }
+    
+    .vehicle-item {
+        background-color: var(--white-color);
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: var(--box-shadow);
+        transition: var(--transition);
+        position: relative;
+    }
+    
+    .vehicle-item:hover {
+        transform: translateY(-10px);
+    }
+    
+    .vehicle-image {
+        position: relative;
+        height: 200px;
+        overflow: hidden;
+    }
+    
+    .vehicle-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+    
+    .vehicle-item:hover .vehicle-image img {
+        transform: scale(1.05);
+    }
+    
+    .vehicle-tag {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        background-color: var(--primary-color);
+        color: var(--white-color);
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        z-index: 1;
+    }
+    
+    .vehicle-actions {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        z-index: 1;
+    }
+    
+    .action-btn {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.9);
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--secondary-color);
+        cursor: pointer;
+        transition: var(--transition);
+    }
+    
+    .action-btn:hover {
+        background-color: var(--primary-color);
+        color: var(--white-color);
+    }
+    
+    .vehicle-details {
+        padding: 1.5rem;
+    }
+    
+    .vehicle-details h3 {
+        margin: 0 0 0.5rem;
+        font-size: 1.2rem;
+        color: var(--secondary-color);
+    }
+    
+    .vehicle-price {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+    }
+    
+    .vehicle-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 1rem;
+        font-size: 0.9rem;
+        color: var(--text-color);
+    }
+    
+    .vehicle-meta span {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+    
+    .vehicle-features {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .vehicle-features span {
+        background-color: var(--light-bg-color);
+        color: var(--text-color);
+        padding: 0.2rem 0.6rem;
+        border-radius: 15px;
+        font-size: 0.8rem;
+    }
+    
+    .vehicle-buttons {
+        display: flex;
+        gap: 0.5rem;
+    }
+    
+    .view-details-btn {
+        flex: 1;
+        text-align: center;
+        text-decoration: none;
+    }
+    
+    .btn-whatsapp-sm {
+        background-color: #25D366;
+        color: var(--white-color);
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+        transition: var(--transition);
+    }
+    
+    .btn-whatsapp-sm:hover {
+        background-color: #128C7E;
+    }
+    
+    .pagination {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-top: 2rem;
+    }
+    
+    .pagination-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: var(--white-color);
+        border: 1px solid var(--border-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-color);
+        cursor: pointer;
+        transition: var(--transition);
+    }
+    
+    .pagination-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+    
+    .pagination-numbers {
+        display: flex;
+        gap: 0.5rem;
+    }
+    
+    .pagination-number {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: var(--white-color);
+        border: 1px solid var(--border-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-color);
+        cursor: pointer;
+        transition: var(--transition);
+    }
+    
+    .pagination-number.active {
+        background-color: var(--primary-color);
+        color: var(--white-color);
+        border-color: var(--primary-color);
+    }
+    
+    .pagination-btn:hover:not(:disabled),
+    .pagination-number:hover:not(.active) {
+        background-color: var(--light-bg-color);
+    }
+    
+    /* Modal styles */
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 1000;
+        overflow-y: auto;
+    }
+    
+    .modal-content {
+        position: relative;
+        width: 90%;
+        max-width: 1200px;
+        margin: 5% auto;
+        background-color: var(--white-color);
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    
+    .close-modal {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        font-size: 2rem;
+        color: var(--white-color);
+        background-color: rgba(0, 0, 0, 0.5);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 10;
+        transition: var(--transition);
+    }
+    
+    .close-modal:hover {
+        background-color: var(--primary-color);
+    }
+    
+    .vehicle-detail-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+    }
+    
+    .vehicle-gallery {
+        padding: 2rem;
+    }
+    
+    .main-image {
+        width: 100%;
+        height: 400px;
+        margin-bottom: 1rem;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    
+    .main-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .thumbnail-images {
+        display: flex;
+        gap: 0.5rem;
+        overflow-x: auto;
+        padding-bottom: 0.5rem;
+    }
+    
+    .thumbnail {
+        width: 80px;
+        height: 60px;
+        border-radius: 5px;
+        cursor: pointer;
+        object-fit: cover;
+        opacity: 0.7;
+        transition: var(--transition);
+    }
+    
+    .thumbnail.active,
+    .thumbnail:hover {
+        opacity: 1;
+        box-shadow: 0 0 0 2px var(--primary-color);
+    }
+    
+    .vehicle-info-detailed {
+        padding: 2rem 2rem 2rem 0;
+    }
+    
+    .vehicle-info-detailed h2 {
+        font-size: 1.8rem;
+        color: var(--secondary-color);
+        margin-bottom: 1rem;
+    }
+    
+    .price-container {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+    
+    .vehicle-price-large {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--primary-color);
+    }
+    
+    .financing-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+    }
+    
+    .down-payment,
+    .monthly-payment {
+        font-size: 1rem;
+        color: var(--text-color);
+    }
+    
+    .monthly-payment {
+        font-weight: 600;
+        color: var(--secondary-color);
+    }
+    
+    .key-details {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+    
+    .detail-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .detail-item i {
+        color: var(--primary-color);
+        font-size: 1.2rem;
+        width: 20px;
+        text-align: center;
+    }
+    
+    .detail-label {
+        font-weight: 600;
+        color: var(--text-color);
+        margin-right: 0.3rem;
+    }
+    
+    .detail-value {
+        color: var(--secondary-color);
+    }
+    
+    .vehicle-description {
+        margin-bottom: 2rem;
+    }
+    
+    .vehicle-description h3 {
+        font-size: 1.3rem;
+        color: var(--secondary-color);
+        margin-bottom: 1rem;
+    }
+    
+    .vehicle-description p {
+        color: var(--text-color);
+        margin-bottom: 1rem;
+        line-height: 1.6;
+    }
+    
+    .features-list h3 {
+        font-size: 1.3rem;
+        color: var(--secondary-color);
+        margin-bottom: 1rem;
+    }
+    
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 0.8rem;
+        margin-bottom: 2rem;
+    }
+    
+    .feature-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--text-color);
+    }
+    
+    .feature-item i {
+        color: var(--primary-color);
+    }
+    
+    .contact-options h3 {
+        font-size: 1.3rem;
+        color: var(--secondary-color);
+        margin-bottom: 1rem;
+    }
+    
+    .contact-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .btn-whatsapp {
+        background-color: #25D366;
+        color: var(--white-color);
+    }
+    
+    .btn-call {
+        background-color: var(--secondary-color);
+        color: var(--white-color);
+    }
+    
+    .btn-whatsapp:hover {
+        background-color: #128C7E;
+    }
+    
+    .btn-call:hover {
+        background-color: #1D3557;
+    }
+    
+    .disclaimer {
+        font-size: 0.8rem;
+        color: var(--text-color);
+        opacity: 0.8;
+    }
+    
+    /* Responsive styles */
+    @media screen and (max-width: 992px) {
+        .vehicle-detail-container {
+            grid-template-columns: 1fr;
+        }
+        
+        .vehicle-gallery,
+        .vehicle-info-detailed {
+            padding: 1.5rem;
+        }
+        
+        .main-image {
+            height: 300px;
+        }
+    }
+    
+    @media screen and (max-width: 768px) {
+        .filter-row {
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .filter-group {
+            width: 100%;
+        }
+        
+        .filter-buttons {
+            width: 100%;
+            margin-left: 0;
+        }
+        
+        .results-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .sort-options {
+            width: 100%;
+        }
+        
+        .sort-options select {
+            flex: 1;
+        }
+        
+        .vehicles-grid {
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        }
+        
+        .key-details {
+            grid-template-columns: 1fr;
+        }
+        
+        .features-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+        
+        .contact-buttons {
+            flex-direction: column;
+        }
+        
+        .contact-buttons a {
+            width: 100%;
+        }
+    }
+    
+    @media screen and (max-width: 576px) {
+        .vehicles-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .main-image {
+            height: 250px;
+        }
+        
+        .thumbnail {
+            width: 60px;
+            height: 45px;
+        }
+        
+        .price-container {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+        
+        .features-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+</head>
+<body>
+<header>
+    <nav class="navbar">
+        <div class="logo">
+            <h1>Drive<span>Dynamo</span></h1>
+        </div>
+        <ul class="nav-links">
+            <li><a href="home.html">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="offer.html" class="active">Explore Offerings</a></li>
+            <li><a href="testimonials.html">Testimonials</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+        <div class="burger">
+            <div class="line1"></div>
+            <div class="line2"></div>
+            <div class="line3"></div>
+        </div>
+    </nav>
+</header>
+
+<section class="page-header">
+    <div class="container">
+        <h1>Explore Our Offerings</h1>
+        <p>Find the perfect vehicle or truck for your needs</p>
+    </div>
+</section>
+
+<section class="offerings-filter">
+    <div class="container">
+        <div class="filter-container">
+            <div class="transaction-type-tabs">
+                <button class="tab-btn active" data-type="buy">Buy</button>
+                <button class="tab-btn" data-type="rent">Rent</button>
+            </div>
+            
+            <form id="filter-form" class="filter-form">
+                <div class="filter-row">
+                    <div class="filter-group">
+                        <label for="vehicle-type">Vehicle Type:</label>
+                        <select id="vehicle-type" name="vehicle-type">
+                            <option value="all">All Types</option>
+                            <option value="car">Car</option>
+                            <option value="truck">Truck</option>
+                            <option value="suv">SUV</option>
+                            <option value="van">Van</option>
+                            <option value="luxury">Luxury</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="price-range">Price Range:</label>
+                        <select id="price-range" name="price-range">
+                            <option value="all">All Prices</option>
+                            <option value="1000-5000">$1,000 - $5,000</option>
+                            <option value="5000-10000">$5,000 - $10,000</option>
+                            <option value="10000-15000">$10,000 - $15,000</option>
+                            <option value="15000-20000">$15,000 - $20,000</option>
+                            <option value="20000-30000">$20,000 - $30,000</option>
+                            <option value="30000-50000">$30,000 - $50,000</option>
+                            <option value="50000-100000">$50,000+</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="brand">Brand:</label>
+                        <select id="brand" name="brand">
+                            <option value="all">All Brands</option>
+                            <option value="toyota">Toyota</option>
+                            <option value="honda">Honda</option>
+                            <option value="ford">Ford</option>
+                            <option value="chevrolet">Chevrolet</option>
+                            <option value="nissan">Nissan</option>
+                            <option value="bmw">BMW</option>
+                            <option value="mercedes">Mercedes-Benz</option>
+                            <option value="dodge">Dodge</option>
+                            <option value="jeep">Jeep</option>
+                            <option value="audi">Audi</option>
+                            <option value="hyundai">Hyundai</option>
+                            <option value="kia">Kia</option>
+                            <option value="subaru">Subaru</option>
+                            <option value="gmc">GMC</option>
+                            <option value="ram">RAM</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="year">Year:</label>
+                        <select id="year" name="year">
+                            <option value="all">All Years</option>
+                            <option value="2020-2023">2020 - 2023</option>
+                            <option value="2015-2019">2015 - 2019</option>
+                            <option value="2010-2014">2010 - 2014</option>
+                            <option value="2000-2009">2000 - 2009</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="filter-row">
+                    <div class="filter-group">
+                        <label for="mileage">Max Mileage:</label>
+                        <select id="mileage" name="mileage">
+                            <option value="all">Any Mileage</option>
+                            <option value="30000">Under 30,000 miles</option>
+                            <option value="60000">Under 60,000 miles</option>
+                            <option value="100000">Under 100,000 miles</option>
+                            <option value="150000">Under 150,000 miles</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="color">Exterior Color:</label>
+                        <select id="color" name="color">
+                            <option value="all">All Colors</option>
+                            <option value="black">Black</option>
+                            <option value="white">White</option>
+                            <option value="silver">Silver</option>
+                            <option value="red">Red</option>
+                            <option value="blue">Blue</option>
+                            <option value="gray">Gray</option>
+                            <option value="green">Green</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group search-group">
+                        <label for="search">Search:</label>
+                        <input type="text" id="search" name="search" placeholder="Search by keywords...">
+                    </div>
+                    
+                    <div class="filter-buttons">
+                        <button type="submit" class="btn-primary">Apply Filters</button>
+                        <button type="reset" class="btn-secondary">Reset</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<section class="vehicles-grid-section">
+    <div class="container">
+        <div class="results-header">
+            <h2 class="results-title">Available Vehicles</h2>
+            <div class="results-count">Showing <span id="results-count">30</span> vehicles</div>
+            <div class="sort-options">
+                <label for="sort-by">Sort by:</label>
+                <select id="sort-by" name="sort-by">
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                    <option value="year-new">Year: Newest First</option>
+                    <option value="year-old">Year: Oldest First</option>
+                    <option value="mileage-low">Mileage: Low to High</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="vehicles-grid" id="vehicles-container">
+            <!-- Vehicle 1 -->
+            <div class="vehicle-item" data-id="v001" data-type="car" data-brand="toyota" data-price="12995" data-year="2018" data-mileage="45230">
+                <div class="vehicle-image">
+                    <img src="https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?q=80&w=2000&auto=format&fit=crop" alt="2018 Toyota Camry">
+                    <div class="vehicle-tag">Hot Deal</div>
+                    <div class="vehicle-actions">
+                        <button class="action-btn wishlist-btn"><i class="far fa-heart"></i></button>
+                        <button class="action-btn compare-btn"><i class="fas fa-exchange-alt"></i></button>
+                        <button class="action-btn share-btn"><i class="fas fa-share-alt"></i></button>
+                    </div>
+                </div>
+                <div class="vehicle-details">
+                    <h3>2018 Toyota Camry SE</h3>
+                    <div class="vehicle-price">$12,995</div>
+                    <div class="vehicle-meta">
+                        <span><i class="fas fa-tachometer-alt"></i> 45,230 miles</span>
+                        <span><i class="fas fa-gas-pump"></i> 32 MPG</span>
+                        <span><i class="fas fa-car"></i> Sedan</span>
+                    </div>
+                    <div class="vehicle-features">
+                        <span>Bluetooth</span>
+                        <span>Backup Camera</span>
+                        <span>Alloy Wheels</span>
+                    </div>
+                    <div class="vehicle-buttons">
+                        <a href="#" class="btn-secondary view-details-btn" data-id="v001">View Details</a>
+                        <a href="https://wa.me/12345678901" class="btn-whatsapp-sm"><i class="fab fa-whatsapp"></i> Contact</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Vehicle 2 -->
+            <div class="vehicle-item" data-id="v002" data-type="truck" data-brand="ford" data-price="18500" data-year="2017" data-mileage="62450">
+                <div class="vehicle-image">
+                    <img src="https://images.unsplash.com/photo-1605893477799-b99e3b8b93fe?q=80&w=2000&auto=format&fit=crop" alt="2017 Ford F-150">
+                    <div class="vehicle-tag">Best Seller</div>
+                    <div class="vehicle-actions">
+                        <button class="action-btn wishlist-btn"><i class="far fa-heart"></i></button>
+                        <button class="action-btn compare-btn"><i class="fas fa-exchange-alt"></i></button>
+                        <button class="action-btn share-btn"><i class="fas fa-share-alt"></i></button>
+                    </div>
+                </div>
+                <div class="vehicle-details">
+                    <h3>2017 Ford F-150 XLT</h3>
+                    <div class="vehicle-price">$18,500</div>
+                    <div class="vehicle-meta">
+                        <span><i class="fas fa-tachometer-alt"></i> 62,450 miles</span>
+                        <span><i class="fas fa-gas-pump"></i> 24 MPG</span>
+                        <span><i class="fas fa-truck-pickup"></i> Truck</span>
+                    </div>
+                    <div class="vehicle-features">
+                        <span>4x4</span>
+                        <span>Tow Package</span>
+                        <span>Crew Cab</span>
+                    </div>
+                    <div class="vehicle-buttons">
+                        <a href="#" class="btn-secondary view-details-btn" data-id="v002">View Details</a>
+                        <a href="https://wa.me/12345678901" class="btn-whatsapp-sm"><i class="fab fa-whatsapp"></i> Contact</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Vehicle 3 -->
+            <div class="vehicle-item" data-id="v003" data-type="suv" data-brand="honda" data-price="16995" data-year="2019" data-mileage="32120">
+                <div class="vehicle-image">
+                    <img src="https://images.unsplash.com/photo-1568844293986-ca3c5a678aa2?q=80&w=2000&auto=format&fit=crop" alt="2019 Honda CR-V">
+                    <div class="vehicle-tag">Low Miles</div>
+                    <div class="vehicle-actions">
+                        <button class="action-btn wishlist-btn"><i class="far fa-heart"></i></button>
+                        <button class="action-btn compare-btn"><i class="fas fa-exchange-alt"></i></button>
+                        <button class="action-btn share-btn"><i class="fas fa-share-alt"></i></button>
+                    </div>
+                </div>
+                <div class="vehicle-details">
+                    <h3>2019 Honda CR-V EX</h3>
+                    <div class="vehicle-price">$16,995</div>
+                    <div class="vehicle-meta">
+                        <span><i class="fas fa-tachometer-alt"></i> 32,120 miles</span>
+                        <span><i class="fas fa-gas-pump"></i> 30 MPG</span>
+                        <span><i class="fas fa-car-side"></i> SUV</span>
+                    </div>
+                    <div class="vehicle-features">
+                        <span>AWD</span>
+                        <span>Sunroof</span>
+                        <span>Apple CarPlay</span>
+                    </div>
+                    <div class="vehicle-buttons">
+                        <a href="#" class="btn-secondary view-details-btn" data-id="v003">View Details</a>
+                        <a href="https://wa.me/12345678901" class="btn-whatsapp-sm"><i class="fab fa-whatsapp"></i> Contact</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Vehicle 4 -->
+            <div class="vehicle-item" data-id="v004" data-type="car" data-brand="chevrolet" data-price="9995" data-year="2016" data-mileage="78500">
+                <div class="vehicle-image">
+                    <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=2000&auto=format&fit=crop" alt="2016 Chevrolet Malibu">
+                    <div class="vehicle-tag">Great Value</div>
+                    <div class="vehicle-actions">
+                        <button class="action-btn wishlist-btn"><i class="far fa-heart"></i></button>
+                        <button class="action-btn compare-btn"><i class="fas fa-exchange-alt"></i></button>
+                        <button class="action-btn share-btn"><i class="fas fa-share-alt"></i></button>
+                    </div>
+                </div>
+                <div class="vehicle-details">
+                    <h3>2016 Chevrolet Malibu LT</h3>
+                    <div class="vehicle-price">$9,995</div>
+                    <div class="vehicle-meta">
+                        <span><i class="fas fa-tachometer-alt"></i> 78,500 miles</span>
+                        <span><i class="fas fa-gas-pump"></i> 34 MPG</span>
+                        <span><i class="fas fa-car"></i> Sedan</span>
+                    </div>
+                    <div class="vehicle-features">
+                        <span>Bluetooth</span>
+                        <span>Backup Camera</span>
+                        <span>Remote Start</span>
+                    </div>
+                    <div class="vehicle-buttons">
+                        <a href="#" class="btn-secondary view-details-btn" data-id="v004">View Details</a>
+                        <a href="https://wa.me/12345678901" class="btn-whatsapp-sm"><i class="fab fa-whatsapp"></i> Contact</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Vehicle 5 -->
+            <div class="vehicle-item" data-id="v005" data-type="truck" data-brand="chevrolet" data-price="22500" data-year="2018" data-mileage="55320">
+                <div class="vehicle-image">
+                    <img src="https://images.unsplash.com/photo-1571987502227-9231b837d92a?q=80&w=2000&auto=format&fit=crop" alt="2018 Chevrolet Silverado">
+                    <div class="vehicle-tag">Popular</div>
+                    <div class="vehicle-actions">
+                        <button class="action-btn wishlist-btn"><i class="far fa-heart"></i></button>
+                        <button class="action-btn compare-btn"><i class="fas fa-exchange-alt"></i></button>
+                        <button class="action-btn share-btn"><i class="fas fa-share-alt"></i></button>
+                    </div>
+                </div>
+                <div class="vehicle-details">
+                    <h3>2018 Chevrolet Silverado 1500 LT</h3>
+                    <div class="vehicle-price">$22,500</div>
+                    <div class="vehicle-meta">
+                        <span><i class="fas fa-tachometer-alt"></i> 55,320 miles</span>
+                        <span><i class="fas fa-gas-pump"></i> 22 MPG</span>
+                        <span><i class="fas fa-truck-pickup"></i> Truck</span>
+                    </div>
+                    <div class="vehicle-features">
+                        <span>4x4</span>
+                        <span>Leather Seats</span>
+                        <span>Tow Package</span>
+                    </div>
+                    <div class="vehicle-buttons">
+                        <a href="#" class="btn-secondary view-details-btn" data-id="v005">View Details</a>
+                        <a href="https://wa.me/12345678901" class="btn-whatsapp-sm"><i class="fab fa-whatsapp"></i> Contact</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Vehicle 6 -->
+            <div class="vehicle-item" data-id="v006" data-type="suv" data-brand="jeep" data-price="19995" data-year="2017" data-mileage="48750">
+                <div class="vehicle-image">
+                    <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?q=80&w=2000&auto=format&fit=crop" alt="2017 Jeep Grand Cherokee">
+                    <div class="vehicle-tag">Off-Road Ready</div>
+                    <div class="vehicle-actions">
+                        <button class="action-btn wishlist-btn"><i class="far fa-heart"></i></button>
+                        <button class="action-btn compare-btn"><i class="fas fa-exchange-alt"></i></button>
+                        <button class="action-btn share-btn"><i class="fas fa-share-alt"></i></button>
+                    </div>
+                </div>
+                <div class="vehicle-details">
+                    <h3>2017 Jeep Grand Cherokee Laredo</h3>
+                    <div class="vehicle-price">$19,995</div>
+                    <div class="vehicle-meta">
+                        <span><i class="fas fa-tachometer-alt"></i> 48,750 miles</span>
+                        <span><i class="fas fa-gas-pump"></i> 26 MPG</span>
+                        <span><i class="fas fa-car-side"></i> SUV</span>
+                    </div>
+                    <div class="vehicle-features">
+                        <span>4x4</span>
+                        <span>Navigation</span>
+                        <span>Heated Seats</span>
+                    </div>
+                    <div class="vehicle-buttons">
+                        <a href="#" class="btn-secondary view-details-btn" data-id="v006">View Details</a>
+                        <a href="https://wa.me/12345678901" class="btn-whatsapp-sm"><i class="fab fa-whatsapp"></i> Contact</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Vehicle 7 -->
+            <div class="vehicle-item" data-id="v007" data-type="car" data-brand="nissan" data-price="11500" data-year="2019" data-mileage="42300">
+                <div class="vehicle-image">
+                    <img src="https://images.unsplash.com/photo-1580273916550-e323be2ae537?q=80&w=2000&auto=format&fit=crop" alt="2019 Nissan Altima">
+                    <div class="vehicle-tag">Fuel Efficient</div>
+                    <div class="vehicle-actions">
+                        <button class="action-btn wishlist-btn"><i class="far fa-heart"></i></button>
+                        <button class="action-btn compare-btn"><i class="fas fa-exchange-alt"></i></button>
+                        <button class="action-btn share-btn"><i class="fas fa-share-alt"></i></button>
+                    </div>
+                </div>
+                <div class="vehicle-details">
+                    <h3>2019 Nissan Altima S</h3>
+                    <div class="vehicle-price">$11,500</div>
+                    <div class="vehicle-meta">
+                        <span><i class="fas fa-tachometer-alt"></i> 42,300 miles</span>
+                        <span><i class="fas fa-gas-pump"></i> 36 MPG</span>
+                        <span><i class="fas fa-car"></i> Sedan</span>
+                    </div>
+                    <div class="vehicle-features">
+                        <span>Bluetooth</span>
+                        <span>Backup Camera</span>
+                        <span>Keyless Entry</span>
+                    </div>
+                    <div class="vehicle-buttons">
+                        <a href="#" class="btn-secondary view-details-btn" data-id="v007">View Details</a>
+                        <a href="https://wa.me/12345678901" class="btn-whatsapp-sm"><i class="fab fa-whatsapp"></i> Contact</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Vehicle 8 -->
+            <div class="vehicle-item" data-id="v008" data-type="truck" data-brand="ram" data-price="24995" data-year="2016" data-mileage="68200">
+                <div class="vehicle-image">
+                    <img src="https://images.unsplash.com/photo-1599256872237-5dcc0fbe9668?q=80&w=2000&auto=format&fit=crop" alt="2016 RAM 1500">
+                    <div class="vehicle-tag">Heavy Duty</div>
+                    <div class="vehicle-actions">
+                        <button class="action-btn wishlist-btn"><i class="far fa-heart"></i></button>
+                        <button class="action-btn compare-btn"><i class="fas fa-exchange-alt"></i></button>
+                        <button class="action-btn share-btn"><i class="fas fa-share-alt"></i></button>
+                    </div>
+                </div>
+                <div class="vehicle-details">
+                    <h3>2016 RAM 1500 Big Horn</h3>
+                    <div class="vehicle-price">$24,995</div>
+                    <div class="vehicle-meta">
+                        <span><i class="fas fa-tachometer-alt"></i> 68,200 miles</span>
+                        <span><i class="fas fa-gas-pump"></i> 20 MPG</span>
+                        <span><i class="fas fa-truck-pickup"></i> Truck</span>
+                    </div>
+                    <div class="vehicle-features">
+                        <span>4x4</span>
+                        <span>Crew Cab</span>
+                        <span>Tow Package</span>
+                    </div>
+                    <div class="vehicle-buttons">
+                        <a href="#" class="btn-secondary view-details-btn" data-id="v008">View Details</a>
+                        <a href="https://wa.me/12345678901" class="btn-whatsapp-sm"><i class="fab fa-whatsapp"></i> Contact</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Vehicle 9 -->
+            <div class="vehicle-item" data-id="v009" data-type="suv" data-brand="toyota" data-price="21500" data-year="2018" data-mileage="39800">
+                <div class="vehicle-image">
+                    <img src="https://images.unsplash.com/photo-1581540222194-0def2dda95b8?q=80&w=2000&auto=format&fit=crop" alt="2018 Toyota RAV4">
+                    <div class="vehicle-tag">Family Friendly</div>
+                    <div class="vehicle-actions">
+                        <button class="action-btn wishlist-btn"><i class="far fa-heart"></i></button>
+                        <button class="action-btn compare-btn"><i class="fas fa-exchange-alt"></i></button>
+                        <button class="action-btn share-btn"><i class="fas fa-share-alt"></i></button>
+                    </div>
+                </div>
+                <div class="vehicle-details">
+                    <h3>2018 Toyota RAV4 XLE</h3>
+                    <div class="vehicle-price">$21,500</div>
+                    <div class="vehicle-meta">
+                        <span><i class="fas fa-tachometer-alt"></i> 39,800 miles</span>
+                        <span><i class="fas fa-gas-pump"></i> 30 MPG</span>
+                        <span><i class="fas fa-car-side"></i> SUV</span>
+                    </div>
+                    <div class="vehicle-features">
+                        <span>AWD</span>
+                        <span>Sunroof</span>
+                        <span>Safety Sense</span>
+                    </div>
+                    <div class="vehicle-buttons">
+                        <a href="#" class="btn-secondary view-details-btn" data-id="v009">View Details</a>
+                        <a href="https://wa.me/12345678901" class="btn-whatsapp-sm"><i class="fab fa-whatsapp"></i> Contact</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Vehicle 10 -->
+            <div class="vehicle-item" data-id="v010" data-type="car" data-brand="honda" data-price="8995" data-year="2015" data-mileage="92400">
+                <div class="vehicle-image">
+                    <img src="https://images.unsplash.com/photo-1590362891991-f776e747a588?q=80&w=2000&auto=format&fit=crop" alt="2015 Honda Civic">
+                    <div class="vehicle-tag">Budget Friendly</div>
+                    <div class="vehicle-actions">
+                        <button class="action-btn wishlist-btn"><i class="far fa-heart"></i></button>
+                        <button class="action-btn compare-btn"><i class="fas fa-exchange-alt"></i></button>
+                        <button class="action-btn share-btn"><i class="fas fa-share-alt"></i></button>
+                    </div>
+                </div>
+                <div class="vehicle-details">
+                    <h3>2015 Honda Civic LX</h3>
+                    <div class="vehicle-price">$8,995</div>
+                    <div class="vehicle-meta">
+                        <span><i class="fas fa-tachometer-alt"></i> 92,400 miles</span>
+                        <span><i class="fas fa-gas-pump"></i> 38 MPG</span>
+                        <span><i class="fas fa-car"></i> Sedan</span>
+                    </div>
+                    <div class="vehicle-features">
+                        <span>Bluetooth</span>
+                        <span>Backup Camera</span>
+                        <span>Cruise Control</span>
+                    </div>
+                    <div class="vehicle-buttons">
+                        <a href="#" class="btn-secondary view-details-btn" data-id="v010">View Details</a>
+                        <a href="https://wa.me/12345678901" class="btn-whatsapp-sm"><i class="fab fa-whatsapp"></i> Contact</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Vehicle 11 -->
+            <div class="vehicle-item" data-id="v011" data-type="luxury" data-brand="bmw" data-price="28995" data-year="2017" data-mileage="45600">
+                <div class="vehicle-image">
+                    <img src="https://images.unsplash.com/photo-1556189250-72ba954cfc2b?q=80&w=2000&auto=format&fit=crop" alt="2017 BMW 3 Series">
+                    <div class="vehicle-tag">Luxury</div>
+                    <div class="vehicle-actions">
+                        <button class="action-btn wishlist-btn"><i class="far fa-heart"></i></button>
+                        <button class="action-btn compare-btn"><i class="fas fa-exchange-alt"></i></button>
+                        <button class="action-btn share-btn"><i class="fas fa-share-alt"></i></button>
+                    </div>
+                </div>
+                <div class="vehicle-details">
+                    <h3>2017 BMW 3 Series 330i</h3>
+                    <div class="vehicle-price">$28,995</div>
+                    <div class="vehicle-meta">
+                        <span><i class="fas fa-tachometer-alt"></i> 45,600 miles</span>
+                        <span><i class="fas fa-gas-pump"></i> 28 MPG</span>
+                        <span><i class="fas fa-car"></i> Sedan</span>
+                    </div>
+                    <div class="vehicle-features">
+                        <span>Leather</span>
+                        <span>Navigation</span>
+                        <span>Premium Package</span>
+                    </div>
+                    <div class="vehicle-buttons">
+                        <a href="#" class="btn-secondary view-details-btn" data-id="v011">View Details</a>
+                        <a href="https://wa.me/12345678901" class="btn-whatsapp-sm"><i class="fab fa-whatsapp"></i> Contact</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Vehicle 12 -->
+            <div class="vehicle-item" data-id="v012" data-type="truck" data-brand="gmc" data-price="26500" data-year="2019" data-mileage="38900">
+                <div class="vehicle-image">
+                    <img src="https://images.unsplash.com/photo-1609752263411-1e507a3a2671?q=80&w=2000&auto=format&fit=crop" alt="2019 GMC Sierra">
+                    <div class="vehicle-tag">Premium Truck</div>
+                    <div class="vehicle-actions">
+                        <button class="action-btn wishlist-btn"><i class="far fa-heart"></i></button>
+                        <button class="action-btn compare-btn"><i class="fas fa-exchange-alt"></i></button>
+                        <button class="action-btn share-btn"><i class="fas fa-share-alt"></i></button>
+                    </div>
+                </div>
+                <div class="vehicle-details">
+                    <h3>2019 GMC Sierra 1500 SLT</h3>
+                    <div class="vehicle-price">$26,500</div>
+                    <div class="vehicle-meta">
+                        <span><i class="fas fa-tachometer-alt"></i> 38,900 miles</span>
+                        <span><i class="fas fa-gas-pump"></i> 23 MPG</span>
+                        <span><i class="fas fa-truck-pickup"></i> Truck</span>
+                    </div>
+                    <div class="vehicle-features">
+                        <span>4x4</span>
+                        <span>Leather Interior</span>
+                        <span>Premium Sound</span>
+                    </div>
+                    <div class="vehicle-buttons">
+                        <a href="#" class="btn-secondary view-details-btn" data-id="v012">View Details</a>
+                        <a href="https://wa.me/12345678901" class="btn-whatsapp-sm"><i class="fab fa-whatsapp"></i> Contact</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Vehicle 13 -->
+            <div class="vehicle-item" data-id="v013" data-type="suv" data-brand="ford" data-price="17995" data-year="2018" data-mileage="52300">
+                <div class="vehicle-image">
+                    <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?q=80&w=2000&auto=format&fit=crop" alt="2018 Ford Explorer">
+                    <div class="vehicle-tag">Family SUV</div>
+                    <div class="vehicle-actions">
+                        <button class="action-btn wishlist-btn"><i class="far fa-heart"></i></button>
+                        <button class="action-btn compare-btn"><i class="fas fa-exchange-alt"></i></button>
+                        <button class="action-btn share-btn"><i class="fas fa-share-alt"></i></button>
+                    </div>
+                </div>
+                <div class="vehicle-details">
+                    <h3>2018 Ford Explorer XLT</h3>
+                    <div class="vehicle-price">$17,995</div>
+                    <div class="vehicle-meta">
+                        <span><i class="fas fa-tachometer-alt"></i> 52,300 miles</span>
+                        <span><i class="fas fa-gas-pump"></i> 24 MPG</span>
+                        <span><i class="fas fa-car-side"></i> SUV</span>
+                    </div>
+                    <div class="vehicle-features">
+                        <span>3rd Row Seating</span>
+                        <span>Backup Camera</span>
+                        <span>Bluetooth</span>
+                    </div>
+                    <div class="vehicle-buttons">
+                        <a href="#" class="btn-secondary view-details-btn" data-id="v013">View Details</a>
+                        <a href="https://wa.me/12345678901" class="btn-whatsapp-sm"><i class="fab fa-whatsapp"></i> Contact</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Vehicle 14 -->
+            <div class="vehicle-item" data-id="v014" data-type="car" data-brand="hyundai" data-price="10995" data-year="2019" data-mileage="38700">
+                <div class="vehicle-image">
+                    <img src="https://images.unsplash.com/photo-1549399542-7e8f2e928464?q=80&w=2000&auto=format&fit=crop" alt="2019 Hyundai Elantra">
+                    <div class="vehicle-tag">Great MPG</div>
+                    <div class="vehicle-actions">
+                        <button class="action-btn wishlist-btn"><i class="far fa-heart"></i></button>
+                        <button class="action-btn compare-btn"><i class="fas fa-exchange-alt"></i></button>
+                        <button class="action-btn share-btn"><i class="fas fa-share-alt"></i></button>
+                    </div>
+                </div>
+                <div class="vehicle-details">
+                    <h3>2019 Hyundai Elantra SEL</h3>
+                    <div class="vehicle-price">$10,995</div>
+                    <div class="vehicle-meta">
+                        <span><i class="fas fa-tachometer-alt"></i> 38,700 miles</span>
+                        <span><i class="fas fa-gas-pump"></i> 37 MPG</span>
+                        <span><i class="fas fa-car"></i> Sedan</span>
+                    </div>
+                    <div class="vehicle-features">
+                        <span>Apple CarPlay</span>
+                        <span>Backup Camera</span>
+                        <span>Bluetooth</span>
+                    </div>
+                    <div class="vehicle-buttons">
+                        <a href="#" class="btn-secondary view-details-btn" data-id="v014">View Details</a>
+                        <a href="https://wa.me/12345678901" class="btn-whatsapp-sm"><i class="fab fa-whatsapp"></i> Contact</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Vehicle 15 -->
+            <div class="vehicle-item" data-id="v015" data-type="truck" data-brand="toyota" data-price="23995" data-year="2017" data-mileage="56800">
+                <div class="vehicle-image">
+                    <img src="https://images.unsplash.com/photo-1559416523-140ddc3d238c?q=80&w=2000&auto=format&fit=crop" alt="2017 Toyota Tacoma">
+                    <div class="vehicle-tag">Off-Road Ready</div>
+                    <div class="vehicle-actions">
+                        <button class="action-btn wishlist-btn"><i class="far fa-heart"></i></button>
+                        <button class="action-btn compare-btn"><i class="fas fa-exchange-alt"></i></button>
+                        <button class="action-btn share-btn"><i class="fas fa-share-alt"></i></button>
+                    </div>
+                </div>
+                <div class="vehicle-details">
+                    <h3>2017 Toyota Tacoma TRD Off-Road</h3>
+                    <div class="vehicle-price">$23,995</div>
+                    <div class="vehicle-meta">
+                        <span><i class="fas fa-tachometer-alt"></i> 56,800 miles</span>
+                        <span><i class="fas fa-gas-pump"></i> 23 MPG</span>
+                        <span><i class="fas fa-truck-pickup"></i> Truck</span>
+                    </div>
+                    <div class="vehicle-features">
+                        <span>4x4</span>
+                        <span>Navigation</span>
+                        <span>Tow Package</span>
+                    </div>
+                    <div class="vehicle-buttons">
+                        <a href="#" class="btn-secondary view-details-btn" data-id="v015">View Details</a>
+                        <footer>
+                          <div class="container">
+                              <div class="footer-content">
+                                  <div class="footer-logo">
+                                      <h2>Drive<span>Dynamo</span></h2>
+                                      <p>Your trusted source for quality used vehicles and trucks.</p>
+                                  </div>
+                                  <div class="footer-links">
+                                      <h3>Quick Links</h3>
+                                      <ul>
+                                          <li><a href="index.html">Home</a></li>
+                                          <li><a href="about.html">About Us</a></li>
+                                          <li><a href="offerings.html">Explore Offerings</a></li>
+                                          <li><a href="testimonials.html">Testimonials</a></li>
+                                          <li><a href="contact.html">Contact Us</a></li>
+                                      </ul>
+                                  </div>
+                                  <div class="footer-contact">
+                                      <h3>Contact Us</h3>
+                                      <p><i class="fas fa-map-marker-alt"></i> 123 Auto Drive, Carville, CA 12345</p>
+                                      <p><i class="fas fa-phone"></i> (555) 123-4567</p>
+                                      <p><i class="fas fa-envelope"></i> info@drivedynamo.com</p>
+                                  </div>
+                                  <div class="footer-social">
+                                      <h3>Follow Us</h3>
+                                      <div class="social-icons">
+                                          <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                                          <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                                          <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                                          <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="footer-bottom">
+                                  <p>&copy; 2025 DriveDynamo. All Rights Reserved.</p>
+                              </div>
+                          </div>
+                      </footer>
+                  
+                      <script src="general.js"></script>
+                  </body>
+                  </html>  

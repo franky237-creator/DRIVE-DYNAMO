@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - DriveDynamo</title>
+    <link rel="stylesheet" href="general.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <h1>Drive<span>Dynamo</span></h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="home.html">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="offer.html">Explore Offerings</a></li>
+                <li><a href="testimonials.html">Testimonials</a></li>
+                <li><a href="contact.html" class="active">Contact Us</a></li>
+            </ul>
+            <div class="burger">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+        </nav>
+    </header>
+
+    <section class="page-header">
+        <div class="container">
+            <h1>Contact Us</h1>
+            <p>We're here to help! Reach out to us with any questions or inquiries.</p>
+        </div>
+    </section>
+
+    <section class="contact-options">
+        <div class="container">
+            <div class="contact-grid">
+                <div class="contact-card">
+                    <i class="fas fa-phone-alt"></i>
+                    <h3>Call Us</h3>
+                    <p>Speak directly with our team</p>
+                    <p><a href="tel:5551234567">(555) 123-4567</a></p>
+                    <div class="hours">
+                        <p><strong>Hours:</strong></p>
+                        <p>Monday - Friday: 9am - 7pm</p>
+                        <p>Saturday: 10am - 5pm</p>
+                        <p>Sunday: Closed</p>
+                    </div>
+                </div>
+                
+                <div class="contact-card">
+                    <i class="fab fa-whatsapp"></i>
+                    <h3>WhatsApp</h3>
+                    <p>Message us for quick responses</p>
+                    <p><a href="https://wa.me/12345678901">(555) 123-4567</a></p>
+                    <div class="response-time">
+                        <p><strong>Average Response Time:</strong></p>
+                        <p>Within 30 minutes during business hours</p>
+                    </div>
+                </div>
+                
+                <div class="contact-card">
+                    <i class="fas fa-envelope"></i>
+                    <h3>Email Us</h3>
+                    <p>Send us your inquiries</p>
+                    <p><a href="mailto:info@drivedynamo.com">info@drivedynamo.com</a></p>
+                    <div class="response-time">
+                        <p><strong>Average Response Time:</strong></p>
+                        <p>Within 24 hours</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact-form-section">
+        <div class="container">
+            <h2 class="section-title">Send Us a Message</h2>
+            <div class="form-container">
+                <form id="contactForm" class="contact-form">
+                    <div class="form-group">
+                        <label for="firstName">First Name*</label>
+                        <input type="text" id="firstName" name="firstName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="lastName">Last Name*</label>
+                        <input type="text" id="lastName" name="lastName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address*</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Phone Number*</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="inquiryType">Inquiry Type*</label>
+                        <select id="inquiryType" name="inquiryType" required>
+                            <option value="">Select an option</option>
+                            <option value="vehicle-inquiry">Vehicle Inquiry</option>
+                            <option value="test-drive">Schedule Test Drive</option>
+                            <option value="financing">Financing Questions</option>
+                            <option value="general">General Inquiry</option>
+                            <option value="feedback">Feedback</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="preferredContact">Preferred Contact Method*</label>
+                        <select id="preferredContact" name="preferredContact" required>
+                            <option value="">Select an option</option>
+                            <option value="phone">Phone</option>
+                            <option value="email">Email</option>
+                            <option value="whatsapp">WhatsApp</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="vehicleInterest">Vehicle of Interest (if applicable)</label>
+                        <input type="text" id="vehicleInterest" name="vehicleInterest" placeholder="e.g., 2018 Toyota Camry">
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="message">Message*</label>
+                        <textarea id="message" name="message" rows="5" required></textarea>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label class="checkbox-container">
+                            I agree to receive communications from DriveDynamo
+                            <input type="checkbox" name="marketing" checked>
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <button type="submit" class="btn-primary">Submit Message</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <section class="map-section">
+        <div class="container">
+            <h2 class="section-title">Visit Our Dealership</h2>
+            <div class="map-container">
+                <div class="map-placeholder">
+                    <img src="/placeholder.svg?height=400&width=1200" alt="Map">
+                    <div class="map-overlay">
+                        <h3>DriveDynamo Dealership</h3>
+                        <p>123 Auto Drive, Carville, CA 12345</p>
+                        <a href="https://maps.google.com" target="_blank" class="btn-primary">Get Directions</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="departments">
+        <div class="container">
+            <h2 class="section-title">Our Departments</h2>
+            <div class="departments-grid">
+                <div class="department-card">
+                    <h3>Sales Department</h3>
+                    <p><strong>Contact:</strong> sales@drivedynamo.com</p>
+                    <p><strong>Phone:</strong> (555) 123-4567 ext. 1</p>
+                    <p>For inquiries about our inventory, pricing, and availability.</p>
+                </div>
+                
+                <div class="department-card">
+                    <h3>Financing Department</h3>
+                    <p><strong>Contact:</strong> finance@drivedynamo.com</p>
+                    <p><strong>Phone:</strong> (555) 123-4567 ext. 2</p>
+                    <p>For questions about financing options, loans, and payment plans.</p>
+                </div>
+                
+                <div class="department-card">
+                    <h3>Customer Service</h3>
+                    <p><strong>Contact:</strong> support@drivedynamo.com</p>
+                    <p><strong>Phone:</strong> (555) 123-4567 ext. 3</p>
+                    <p>For general inquiries, feedback, and assistance.</p>
+                </div>
+                
+                <div class="department-card">
+                    <h3>Management</h3>
+                    <p><strong>Contact:</strong> management@drivedynamo.com</p>
+                    <p><strong>Phone:</strong> (555) 123-4567 ext. 4</p>
+                    <p>For business inquiries, partnerships, and press.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="faq">
+        <div class="container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <div class="accordion">
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <h3>What documents do I need to purchase a vehicle?</h3>
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <p>To purchase a vehicle, you'll need a valid driver's license, proof of insurance, and proof of income if financing. If you're trading in a vehicle, bring your title and registration as well.</p>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <h3>Do you offer financing options?</h3>
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <p>Yes, we offer a variety of financing options to fit different budgets and credit situations. Our finance team works with multiple lenders to find the best rates and terms for you.</p>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <h3>Can I schedule a test drive online?</h3>
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <p>Yes, you can schedule a test drive through our website or by contacting us directly via phone, email, or WhatsApp. We recommend scheduling in advance to ensure the vehicle is available.</p>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <h3>Do your vehicles come with a warranty?</h3>
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <p>Many of our vehicles come with the remainder of the manufacturer's warranty. We also offer extended warranty options for additional peace of mind. Ask our sales team about warranty options for specific vehicles.</p>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <h3>What is your return policy?</h3>
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <p>We offer a 3-day/300-mile return policy on most vehicles. If you're not completely satisfied with your purchase, you can return it within this period for a full refund or exchange. Some conditions apply, so please ask for details.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Find Your Perfect Vehicle?</h2>
+                <p>Browse our extensive inventory or contact us directly for personalized assistance.</p>
+                <div class="cta-buttons">
+                    <a href="offerings.html" class="btn-primary">Browse Inventory</a>
+                    <a href="https://wa.me/12345678901" class="btn-whatsapp"><i class="fab fa-whatsapp"></i> Contact via WhatsApp</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2>Drive<span>Dynamo</span></h2>
+                    <p>Your trusted source for quality used vehicles and trucks.</p>
+                </div>
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="home.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="offer.html">Explore Offerings</a></li>
+                        <li><a href="testimonials.html">Testimonials</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h3>Contact Us</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> 123 Auto Drive, Carville, CA 12345</p>
+                    <p><i class="fas fa-phone"></i> (555) 123-4567</p>
+                    <p><i class="fas fa-envelope"></i> info@drivedynamo.com</p>
+                </div>
+                <div class="footer-social">
+                    <h3>Follow Us</h3>
+                    <div class="social-icons">
+                        <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 DriveDynamo. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="general.js"></script>
+</body>
+</html>
